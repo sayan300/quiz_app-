@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class=" min-h-screen flex items-center justify-center bg-black ">
+    <div class="w-96 bg-white  px-4  text-lg py-5 rounded-lg">
+        <h1 class=" text-2xl font-bold">Create Your Account</h1>
+        <p>Sign up to start taking Quiz</p>
+        <p id="error-msg" class="text-red-600 text-sm hidden"></p>
+        <h1 class=" text-xl text-gray-700 font-semibold"> Full Name</h1>
+        <input id="fullName" type="text" placeholder="e.g sayan jana" class="w-full border border-gray-300 rounded-md px-3 py-2 mb-4">
+        <h1 class=" text-xl text-gray-700 font-semibold">Email Address</h1>
+        <input id="email" type="email" placeholder="sayan@example.com" class="w-full border border-gray-300 rounded-md px-3 py-2 mb-4">
+        <h1 class=" text-xl text-gray-700 font-semibold"> Password</h1>
+        <input id="password" type="password" placeholder="Min 6 characters" class="w-full border border-gray-300 rounded-md px-3 py-2 mb-4">
+        <h1 class=" text-xl text-gray-700 font-semibold">Confirm  Password</h1>
+        <input id="confirmPassword" type="password" placeholder="Re enter your Password" class="w-full border border-gray-300 rounded-md px-3 py-2 mb-4">
+        <button id="createAccountBtn" class="w-80 bg-blue-600 h-10 text-white rounded-full">Create Account</button>
+        <h1 class="text-lg">Already have a account ?<a href="/registration.html" class="text-blue-600 ">Sign in </a></h1>
+
+
+    </div>
+
+    <script src="/login.js"></script>
+</body>
+</html>

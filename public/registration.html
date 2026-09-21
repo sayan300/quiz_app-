@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-black ">
+    <div class="w-96 bg-white  px-4  text-lg py-5 grid gap-4 rounded-lg">
+        <h1 class="text-2xl">Welcome back !</h1>
+        <p>sign in to continue to your quiz</p>
+        <p id="error-msg" class="text-red-600 text-sm hidden"></p>
+        <p>Emial address</p>
+        <input id="email" type="email" placeholder="sayan@example.com " class="border border-gray-300 rounded-xl px-3 py-2 mb-4">
+        <p>password</p>
+        <input id="password" type="password" placeholder="enter your password" class="border border-gray-300 rounded-xl px-3 py-2 mb-4">
+        <p class=" grid place-items-end text-blue-600">Forget password</p>
+        <button id="signInBtn" class="w-70 bg-blue-600 h-10 text-white rounded-full">sign in and start quiz</button>
+        <p class="px-10">don't have account <a href="/login.html" class="text-blue-600">Register now </a> </p>
+    </div>
+
+    <script src="/registration.js"></script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quze app </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black min-h-screen flex items-center justify-center p-4 antialiased">
+
+    <div id="quiz-card" class="w-full max-w-xl bg-white rounded-2xl shadow-xl shadow-slate-50 p-6 sm:p-8 border border-slate-100">
+        
+        <div class="flex justify-between items-center mb-6">
+            <span class="text-xs text-black uppercase bg-green-100 px-3 py-1 rounded-full">
+                Simple Quiz App
+            </span>
+            <span class="text-sm font-medium text-slate-400">
+                Question <span id="current-number" class="text-slate-700 font-bold">1</span> of <span id="total-questions">30</span>
+            </span>
+        </div>
+
+        <div class="w-full bg-slate-100 h-2 rounded-full mb-8 overflow-hidden">
+            <div id="progress-bar" class="bg-green-600 h-2 rounded-full w-0 transition-all duration-300"></div>
+        </div>
+
+        <h2 id="question-text" class="text-xl sm:text-2xl font-bold text-slate-800 mb-6 leading-snug">
+            Loading question...
+        </h2>
+
+        <div id="options-container" class="space-y-3 mb-8">
+            </div>
+
+        <div class="flex items-center justify-end pt-4 border-t border-slate-100">
+            <button id="next-btn" disabled class="w-full sm:w-auto px-8 py-3 bg-green-600 text-white rounded-xl shadow-lg transition-all text-center cursor-not-allowed">
+                Next Question
+            </button>
+        </div>
+        <div id="timer" class="text-3xl font-bold text-slate-800">30:00</div>
+    </div>
+ 
+    
+
+    <script>
+        
+        const quizData = [
+            { q: "What does HTML stand for? ", a: ["A) HighText Machine Language", "B) HyperText Markup Language", "C) Home Tool Markup Language", "D) Hyperlink and Text Markup Language"], correct: 2 },
+            { q: "Which HTML element is used to define the largest heading? ", a: ["heading", "h6 ", "h1 ", "head"], correct: 2 },
+            { q: "What is the correct HTML element for inserting a line break? ", a: ["br", "hr", "p", "div"], correct: 1 },
+            { q: "Which character is used to indicate an end tag? ", a: ["/", "*", "+", "-"], correct: 0 },
+            { q: "Which attribute is used to specify an alternative text for an image if the image cannot be displayed? ", a: ["title", "src", "alt", "link"], correct: 0 },
+            { q: "Which HTML element is used to create an unordered list? ", a: ["ol", "ul", "li", "list"], correct: 2 },
+            { q: " Which element is used to define the title of a webpage that appears in the browser tab? ", a: ["meta", "title", "header", "head"], correct: 2 },
+            { q: "Which HTML5 element is used to display a self-contained piece of content, like a blog post or news article? ", a: ["section", "div", "artical", "aside"], correct: 1 },
+            { q: "What does CSS stand for? ", a: ["Computer Style Sheets ", "Cascading Style Sheets ", "Creative Style Systems ", "Colorful Style Sheets"], correct: 2 },
+            { q: "Where in an HTML document is the correct place to refer to an external style sheet? ", a: ["In the head section", "In the body section", "At the end of the document", "Inside the html tag"], correct: 0 },
+            { q: "Which HTML tag is used to define an internal style sheet? ", a: ["style", "css", "script", "link"], correct: 0 },
+            { q: "Which CSS property is used to change the background color of an element? ", a: ["background-color", "color", "border-color", "fill"], correct: 0 },
+            { q: "How do you select an element with the id 'navbar' in CSS? ", a: ["#navbar", ".navbar", "navbar", "*navbar"], correct: 0 },
+            { q: "How do you select elements with the class name 'card' in CSS? ", a: [".card", "#card", "card", "*card"], correct: 0 },
+            { q: "Which CSS property controls the text size? ", a: ["font-size", "text-size", "letter-spacing", "word-spacing"], correct: 0 },
+            { q: "What is the correct CSS order for the box model, from the outside moving inward? ", a: ["Margin", "Border", "Padding", "Content"], correct: 0 },
+            { q: "How do you make a list not display bullet points? ", a: ["list-style-type: no-bullet ", "bullet: none ", "list-style-type: none", "text-decoration: none"], correct: 1 },
+            { q: "Which CSS property is used to change the font of an element? ", a: ["font-family", "font-size", "font-weight", "font-style"], correct: 0 },
+            { q: "Inside which HTML element do we put JavaScript code? ", a: ["script", "javascript", "js", "code"], correct: 0 },
+            { q: "How do you write 'Hello World' in an alert box? ", a: ["alert('Hello World');", "prompt('Hello World');", "confirm('Hello World');", "console.log('Hello World');"], correct: 0 },
+            { q: "How do you create a variable in JavaScript? ", a: [" myVariable; ", "var myVariable; ", "variable myVariable; ", "string myVariable;"], correct: 1 },
+            { q: "Which operator is used to assign a value to a variable? ", a: ["=", "+", "-", "*"], correct: 0 },
+            { q: "What is the correct way to write an if statement in JavaScript? ", a: ["if i = 5 then ", "if (i == 5) ", "if i == 5 then ", " if i = 5"], correct: 2 },
+            { q: "How do you start a for loop in JavaScript? ", a: ["for (i = 0; i < 5; i++)", "for i = 0 to 5", "for (i < 5; i++)", "for (i = 0; i < 5)"], correct: 0 },
+            { q: "How do you add a single-line comment in JavaScript? ", a: ["// This is a comment", "/* This is a comment */", "<!-- This is a comment --!>", "!! This is a comment !!"], correct: 0 },
+            { q: "Which JavaScript method is used to select an HTML element by its ID? ", a: ["document.getElementById", "document.queryID() ", "document.getElementByName() ", "document.selectId()"], correct: 1 },
+            { q: "What is the correct way to write a JavaScript array? ", a: ["let myArray = [];", "let myArray = {};", "let myArray = ();", "let myArray = ``;"], correct: 0 },
+            { q: "Which event occurs when the user clicks on an HTML element? ", a: ["onclick", "onmouseover", "onmouseout", "onload"], correct: 0 },
+            { q: ". Which keyword is used to define a function?", a: ["function", "def", "func", "method"], correct: 0 },
+            { q: "Which data type is used to store text?", a: ["String", "Integer", "Float", "Boolean"], correct: 0 }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedOptionIndex = null;
+
+       
+        const currentNumberEl = document.getElementById('current-number');
+        const totalQuestionsEl = document.getElementById('total-questions');
+        const progressBarEl = document.getElementById('progress-bar');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const quizCard = document.getElementById('quiz-card');
+
+        
+        totalQuestionsEl.textContent = quizData.length;
+
+        function loadQuestion() {
+            selectedOptionIndex = null;
+            
+            
+            nextBtn.disabled = true;
+            nextBtn.className = "w-full sm:w-auto px-8 py-3 bg-green-600 text-white font-semibold rounded-xl shadow-lg transition-all text-center cursor-not-allowed";
+
+            
+            currentNumberEl.textContent = currentQuestionIndex + 1;
+            const progressPercent = ((currentQuestionIndex) / quizData.length) * 100;
+            progressBarEl.style.width = `${progressPercent}%`;
+
+            
+            const currentQuestion = quizData[currentQuestionIndex];
+            questionTextEl.textContent = currentQuestion.q;
+
+        
+            optionsContainerEl.innerHTML = '';
+            currentQuestion.a.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = "w-full text-left px-5 py-4 rounded-xl border-2 border-slate-200 hover:border-green-600 hover:bg-indigo-50/50 transition-all font-medium text-slate-700 flex items-center justify-between group";
+                button.innerHTML = `
+                    <span>${option}</span>
+                    <span class="dot-indicator h-5 w-5 rounded-full border-2 border-slate-300 group-hover:border-indigo-600 transition-colors"></span>
+                `;
+                
+                button.addEventListener('click', () => selectOption(index, button));
+                optionsContainerEl.appendChild(button);
+            });
+        }
+
+        function selectOption(index, clickedBtn) {
+            selectedOptionIndex = index;
+            
+           
+            const buttons = optionsContainerEl.querySelectorAll('button');
+            buttons.forEach((btn) => {
+                btn.className = "w-full text-left px-5 py-4 rounded-xl border-2 border-slate-200 hover:border-indigo-600 hover:bg-indigo-50/50 transition-all font-medium text-slate-700 flex items-center justify-between group";
+                btn.querySelector('.dot-indicator').className = "dot-indicator h-5 w-5 rounded-full border-2 border-slate-300 group-hover:border-indigo-600 transition-colors";
+                btn.querySelector('.dot-indicator').innerHTML = '';
+            });
+
+            
+            clickedBtn.className = "w-full text-left px-5 py-4 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 transition-all font-medium text-indigo-900 flex items-center justify-between";
+            const indicator = clickedBtn.querySelector('.dot-indicator');
+            indicator.className = "dot-indicator h-5 w-5 rounded-full border-2 border-indigo-600 bg-indigo-600 flex items-center justify-center";
+            indicator.innerHTML = '<span class="h-2 w-2 rounded-full bg-white"></span>';
+
+            
+            nextBtn.disabled = false;
+            nextBtn.className = "w-full sm:w-auto px-8 py-3 bg-blue-600 hover:bg-indigo-700 active:transform active:scale-95 text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 transition-all text-center cursor-pointer";
+        }
+
+        nextBtn.addEventListener('click', () => {
+            
+            if (selectedOptionIndex === quizData[currentQuestionIndex].correct) {
+                score++;
+            }
+
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        });
+
+        function showResults() {
+           
+            progressBarEl.style.width = '100%';
+            
+            
+            let feedback = "Great effort!";
+            if (score === quizData.length) feedback = "Perfect Score! ";
+            else if (score >= 20) feedback = "Excellent job!";
+            else if (score >= 10) feedback = "Good effort!";
+
+            
+            quizCard.innerHTML = `
+                <div class="text-center py-6">
+                    <div class="inline-flex items-center justify-center bg-indigo-50 text-indigo-600 w-16 h-16 rounded-full mb-4 text-3xl">🏆</div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">Quiz Completed!</h2>
+                    <p class="text-slate-500 font-medium mb-6">${feedback}</p>
+                    
+                    <div class="bg-slate-50 border border-slate-100 rounded-2xl p-6 mb-8 max-w-xs mx-auto">
+                        <span class="text-slate-400 font-bold block text-sm tracking-wide uppercase mb-1">Your Score</span>
+                        <span class="text-4xl sm:text-5xl font-black text-indigo-600">${score}</span>
+                        <span class="text-slate-500 font-bold text-xl"> / ${quizData.length}</span>
+                    </div>
+
+                    <button onclick="window.location.reload()" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 transition-all text-center">
+                        Try Again
+                    </button>
+                </div>
+            `;
+        }
+
+       
+        loadQuestion();
+        
+    let totalSeconds = 30 * 60;
+        const display = document.getElementById('timer');
+
+        const countdown = setInterval(() => {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+
+            display.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            if (totalSeconds <= 0) {
+                clearInterval(countdown);
+                display.textContent = "Time's up!";
+            } else {
+                totalSeconds--;
+            }
+        }, 1000);
+    
+    </script>
+</body>
+</html>

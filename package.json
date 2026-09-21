@@ -1,0 +1,15 @@
+{
+  "name": "quiz-backend",
+  "version": "1.0.0",
+  "description": "Node.js + PostgreSQL backend for the Quiz app login/registration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.12.0",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5"
+  }
+}

@@ -6,7 +6,14 @@ const pool = require('./db');
 
 const app = express();
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve static files, but do NOT auto-serve index.html for "/"
+app.use(express.static(path.join(__dirname, 'public'), { index: false }));
+
+// Root route → always show the sign-up page first (login.html = account creation form)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
 
 // Register (used by login.html — the "Create Your Account" form)
 app.post('/api/register', async (req, res) => {
